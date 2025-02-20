@@ -8,11 +8,13 @@ import TextAreaField from "./components/TextAreaField";
 import { Separator } from "../ui/separator";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
+import IconField from "./components/IconField";
 
 
 const AddListing = () => {
 
   const [formData, setFormData] = useState([]);
+  const [featureData, setFeatureData] = useState([]);
 
   const handleInputChange=(name, value)=>{
     setFormData((prevData)=>({
@@ -21,6 +23,15 @@ const AddListing = () => {
     }))
 
     console.log(formData);
+  }
+
+  const handleFeatureChange=(name, value)=>{
+    setFeatureData((prevData)=>({
+      ...prevData,
+      [name]: value
+    }))
+
+    console.log(featureData);
   }
 
   const onSubmit=(e)=>{
@@ -40,7 +51,10 @@ const AddListing = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {carDetails.carDetails.map((item, index) => (
                   <div key={index}>
-                    <label className="text-sm">{item?.label} {item.required&&<span className="text-red-500">*</span>}</label>
+                    <label className="text-sm flex gap-2 items-center mb-1">
+                      <IconField icon={item?.icon}/>
+                      {item?.label} {item.required&&<span className="text-red-500">*</span>}
+                    </label>
                     {item.fieldType == "text" || item.fieldType == "number" ? (
                       <InputField item={item} handleInputChange={handleInputChange} />
                     ) 
@@ -61,7 +75,7 @@ const AddListing = () => {
             <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
                 {features.features.map((item, index)=>(
                   <div className="flex gap-2 items-center">
-                    <Checkbox onCheckedChange={(value)=>handleInputChange(item.name, value)} /> <h2>{item.label}</h2>
+                    <Checkbox onCheckedChange={(value)=>handleFeatureChange(item.name, value)} /> <h2>{item.label}</h2>
                   </div>
                 ))}
             </div>
